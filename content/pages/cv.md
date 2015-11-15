@@ -5,6 +5,6 @@ Tags: CV
 Author: Lee Zamparo
 Summary: My CV
 
-[Have a look](./images/lee_cv.pdf)
+[Have a look](../pdfs/lee_cv.pdf)
 
 

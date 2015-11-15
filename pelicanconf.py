@@ -4,19 +4,20 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Lee Zamparo'
 SITENAME = 'Lee Zamparo'
-SITEURL = ''
+SITEURL = 'http://lzamparo.github.io'
 
 PATH = 'content'
 
-TIMEZONE = 'America/Toronto'
+TIMEZONE = 'America/New_York'
 
 DEFAULT_LANG = 'en'
 
 # Pelican theme
-THEME = './crowsfoot'
+THEME = 'crowsfoot'
+
 
 # Crowsfoot specific variables
-PROFILE_IMAGE_URL='images/me.png'
+PROFILE_IMAGE_URL='https://en.gravatar.com/userimage/6827348/8ddec1ea955824dea50c908ad3154623.png?size=200'
 EMAIL_ADDRESSS='zamparol@cbio.mskcc.org'
 GITHUB_ADDRESS='https://github.com/lzamparo'
 TWITTER_ADDRESS='https://twitter.com/lzamparo'
@@ -29,16 +30,14 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = False 
 
 # Social widget
-SOCIAL = (('Github', 'https://github.com/lzamparo/'),
-          ('Twitter', 'https://twitter.com/lzamparo'),)
+SOCIAL = False
 
 DEFAULT_PAGINATION = 5
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = False
+
+STATIC_PATHS = ['images', 'pdfs']
