@@ -1,2 +1,3 @@
 # blog_source
-source and posts that generates content for lzamparo.github.io
+
+This is my blog content, written in Markdown. Pelican configuration file and .md that generates content for lzamparo.github.io
