@@ -5,8 +5,8 @@ Category: Papers
 I've been reading a few papers recently that each involve training a deep network that takes input directly from sequence and predicts some aspect of 
 chromatin.  [Deep Bind](http://www.nature.com/nbt/journal/v33/n8/full/nbt.3300.html) predicts protein-DNA binding, and 
 [DeepSEA](http://www.nature.com/nmeth/journal/v12/n10/full/nmeth.3547.html) predicts the effect of SNPs on chromatin state.  The most recent paper, 
-and the one I find most accessible, is [Basset](http://biorxiv.org/content/early/2015/10/05/028399). This paper from David R. Kelley, Jasper Snoek
-and John Rinn is a doozy.  
+and the one I find most accessible, is [Basset](http://biorxiv.org/content/early/2015/10/05/028399). Authored by David R. Kelley (from John Rinn's lab),
+as well as former U of T alumnus Jasper Snoek, this is a great paper which should make a lasting contribution to sequence modeling.
 
 ### Summary 
 
