@@ -31,6 +31,10 @@ AUTHOR_FEED_RSS = None
 # Menu items for 
 MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
+# Pelican plugins
+PLUGIN_PATHS = [‘~/projects/pelican-plugins']
+PLUGINS = ["render_math"]
+
 # Blogroll
 LINKS = False 
 
