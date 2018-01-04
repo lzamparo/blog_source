@@ -1,5 +1,5 @@
 Title: Generating DNA barcdes with Numpy
-Slug: An example of optimizing slower code
+Slug: generating-dna-barcodes
 Date: 04-01-2018
 Category: Python
 Tags: Numpy, Numba, Python
