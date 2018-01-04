@@ -33,9 +33,34 @@ MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
 
 # Pelican plugins
-PLUGIN_PATHS = ['../pelican-plugins']
-PLUGINS = ['render_math', 'ipynb.liquid' ,'liquid_tags.notebook']
-MARKUP = ('md', )
+MARKUP = ['md']
+PLUGIN_PATHS = ['./plugins', '../pelican-plugins']
+PLUGINS = ['render_math', 'ipynb.liquid']
+IGNORE_FILES = ['.ipynb_checkpoints']
+
+# needed for liquid tags
+NOTEBOOK_DIR = 'notebooks'
+
+#--- begin jvdp
+#MARKUP = ['md']
+#PLUGIN_PATHS = ['./plugins', './plugins/pelican-plugins']
+#PLUGINS = [
+#    'summary',       # auto-summarizing articles
+#    'feed_summary',  # use summaries for RSS, not full articles
+#    'ipynb.liquid',  # for embedding notebooks
+#    'liquid_tags.img',  # embedding images
+#    'liquid_tags.video',  # embedding videos
+#    'liquid_tags.include_code',  # including code blocks
+#    'liquid_tags.literal'
+#]
+#IGNORE_FILES = ['.ipynb_checkpoints']
+#
+# for liquid tags
+#CODE_DIR = 'downloads/code'
+#NOTEBOOK_DIR = 'downloads/notebooks'
+#
+#--- end jvdp
+
 
 # Blogroll
 LINKS = False 
