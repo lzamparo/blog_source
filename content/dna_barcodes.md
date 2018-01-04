@@ -1,6 +1,6 @@
 Title: Generating DNA barcdes with Numpy
 Slug: generating-dna-barcodes
-Date: 04-01-2018
+Date: 01-04-2018
 Category: Python
 Tags: Numpy, Numba, Python
 Author: Lee Zamparo
