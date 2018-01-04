@@ -1,0 +1,8 @@
+Title: Generating DNA barcdes with Numpy
+Slug: Optimizing slower code with Numpy
+Date: 04-01-2018
+Category: Software
+Tags: Numpy, Numba, Python
+Author: Lee Zamparo
+Summary: A tour through the process of optimizing slow code
+
