@@ -34,7 +34,7 @@ MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
 # Pelican plugins
 PLUGIN_PATHS = ['../pelican-plugins']
-PLUGINS = ["render_math", "pelican_ipynb.markup"]
+PLUGINS = ["render_math", "pelican_ipynb"]
 
 # Ensure both .md and .ipynb get taken as content
 MARKUP = ('md', 'ipynb')
