@@ -34,10 +34,8 @@ MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
 # Pelican plugins
 PLUGIN_PATHS = ['../pelican-plugins']
-PLUGINS = ["render_math", "pelican-ipynb"]
-
-# Ensure both .md and .ipynb get taken as content
-MARKUP = ('md', 'ipynb')
+PLUGINS = ['render_math', 'liquid_tags.notebook']
+MARKUP = ('md', )
 
 # Blogroll
 LINKS = False 

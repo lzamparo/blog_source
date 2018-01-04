@@ -5,3 +5,5 @@ Category: Python
 Tags: Numpy, Numba, Python
 Author: Lee Zamparo
 Summary: A tour through the process of optimizing slow code
+
+{% notebook notebooks/dna_barcodes.ipynb  %}
