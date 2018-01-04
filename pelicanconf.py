@@ -31,12 +31,13 @@ AUTHOR_FEED_RSS = None
 # Menu items for 
 MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
-# Ensure both .md and .ipynb get taken as content
-MARKUP = ('md', 'ipynb')
 
 # Pelican plugins
 PLUGIN_PATHS = ['../pelican-plugins']
-PLUGINS = ["render_math", "ipynb"]
+PLUGINS = ["render_math", "pelican_ipynb.markup"]
+
+# Ensure both .md and .ipynb get taken as content
+MARKUP = ('md', 'ipynb')
 
 # Blogroll
 LINKS = False 
