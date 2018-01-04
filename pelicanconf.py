@@ -36,7 +36,7 @@ MARKUP = ('md', 'ipynb')
 
 # Pelican plugins
 PLUGIN_PATHS = ['../pelican-plugins']
-PLUGINS = ["render_math", "ipynb.markup"]
+PLUGINS = ["render_math", "ipynb"]
 
 # Blogroll
 LINKS = False 
