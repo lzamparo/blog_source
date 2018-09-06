@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = u'Lee Zamparo'
 SITENAME = u'Lee Zamparo'
 SITEURL = 'http://lzamparo.github.io'
-SITESUBTITLE = '1. Get the data 2. Learn a model 3. ??? 4. Knowledge'
+SITESUBTITLE = 'I work on different problems in computational biology.  Main tools are machine learning, Python, R.'
 PATH = 'content'
 
 TIMEZONE = 'America/New_York'
