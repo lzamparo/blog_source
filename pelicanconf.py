@@ -4,52 +4,57 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Lee Zamparo'
 SITENAME = u'Lee Zamparo'
-SITEURL = 'http://lzamparo.github.io'
-SITESUBTITLE = 'I work on different problems in computational biology.  Main tools are machine learning, Python, R.'
-PATH = 'content'
-
-TIMEZONE = 'America/New_York'
-
-DEFAULT_LANG = 'en'
+SITEURL = "http://localhost:8000"
+SITETITLE = "Lee Zamparo"
+SITESUBTITLE = "I work on problems in machine learning for computational biology"
 
 # Pelican theme
-THEME = 'crowsfoot'
+THEME = "themes/Flex"
+PATH = "content"
+TAGS_SAVE_AS = ''
+TAG_SAVE_AS = ''
 
-# Crowsfoot specific variables
-PROFILE_IMAGE_URL='https://en.gravatar.com/userimage/6827348/8ddec1ea955824dea50c908ad3154623.png?size=200'
-EMAIL_ADDRESSS='zamparol@cbio.mskcc.org'
-GITHUB_ADDRESS='https://github.com/lzamparo'
-TWITTER_ADDRESS='https://twitter.com/lzamparo'
+TIMEZONE = 'America/New_York'
+I18N_TEMPLATES_LANG = "en"
+DEFAULT_LANG = "en"
+OG_LOCALE = "en_US"
+LOCALE = "en_US"
 
-# Feed generation is usually not desired when developing
-FEED_ALL_ATOM = None
-CATEGORY_FEED_ATOM = None
-TRANSLATION_FEED_ATOM = None
-AUTHOR_FEED_ATOM = None
-AUTHOR_FEED_RSS = None
+DATE_FORMATS = {
+    "en": "%B %d, %Y",
+}
 
-# Menu items for 
-MENUITEMS = [('Blog', '/'), ('CV', '/pdfs/lee_cv.pdf')]
 
+# paths beneath $PATH
+STATIC_PATHS = ['images', 'pdfs']
+
+# Flex specific variables
+# Main Menu Items
+MAIN_MENU = True
+MENUITEMS = (
+    ('Blog', '/'), 
+    ('CV', '/pdfs/lee_cv.pdf')
+)
+
+SOCIAL = (
+    ('github', 'https://github.com/lzamparo'),
+    ('envelope', 'mailto:zamparo@gmail.com'),
+    ('linkedin', 'https://www.linkedin.com/in/lee-zamparo'),
+    ('scholar', 'https://scholar.google.ca/citations?user=UtAt8MoAAAAJ'),
+    ('twitter', 'https://twitter.com/lzamparo'),
+)
+
+
+THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE = True
+THEME_COLOR_ENABLE_USER_OVERRIDE = True
+USE_LESS = True
 
 # Pelican plugins
-MARKUP = ['md']
-PLUGIN_PATHS = ['./plugins', '../pelican-plugins']
-PLUGINS = ['render_math', 'ipynb.liquid']
-IGNORE_FILES = ['.ipynb_checkpoints']
+#MARKUP = ['md']
+#PLUGIN_PATHS = ['./plugins']
+#PLUGINS = ['render_math', 'liquid_tags']
+#IGNORE_FILES = ['.ipynb_checkpoints']
 
 # needed for liquid tags
-NOTEBOOK_DIR = 'notebooks'
-
-# Blogroll
-LINKS = False 
-
-# Social widget
-SOCIAL = False
-
-DEFAULT_PAGINATION = 5
-
-# Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = False
-
-STATIC_PATHS = ['images', 'pdfs']
+#NOTEBOOK_DIR = 'notebooks'
+DEFAULT_PAGINATION = 3
