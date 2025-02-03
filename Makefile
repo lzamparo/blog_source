@@ -101,7 +101,7 @@ rsync_upload: publish
 github: publish
 	cp -r $(OUTPUTDIR)/* $(PAGESDIR)
 	cd $(PAGESDIR)
-	git add . && git commit -m "refreshing content"
+	git add --all && git commit -m "refreshing content"
 	git push origin $(GITHUB_PAGES_BRANCH)
 	cd $(BASEDIR)
 
