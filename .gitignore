@@ -1,2 +1,4 @@
-# ignore .DS_Store files
-.DS_Store
+.python-version
+.venv
+pyproject.toml
+uv.lock

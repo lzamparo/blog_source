@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-AUTHOR = u'Lee Zamparo'
+AUTHOR = u'Lee'
 SITENAME = u'Lee Zamparo'
 SITEURL = "http://localhost:8000"
 SITETITLE = "Lee Zamparo"
-SITESUBTITLE = "I work on problems in machine learning for computational biology"
+SITELOGO = "/images/profile.png"
+SITESUBTITLE = "machine learning, computational biology, NLP"
 
 # Pelican theme
 THEME = "themes/Flex"
@@ -30,31 +31,32 @@ STATIC_PATHS = ['images', 'pdfs']
 
 # Flex specific variables
 # Main Menu Items
-MAIN_MENU = True
-MENUITEMS = (
-    ('Blog', '/'), 
-    ('CV', '/pdfs/lee_cv.pdf')
-)
+MAIN_MENU = False
+#MENUITEMS = (
+#    ('Blog', '/'), 
+#    ('CV', '/pdfs/lee_cv.pdf')
+#)
 
 SOCIAL = (
     ('github', 'https://github.com/lzamparo'),
     ('envelope', 'mailto:zamparo@gmail.com'),
     ('linkedin', 'https://www.linkedin.com/in/lee-zamparo'),
     ('scholar', 'https://scholar.google.ca/citations?user=UtAt8MoAAAAJ'),
-    ('twitter', 'https://twitter.com/lzamparo'),
 )
 
 
 THEME_COLOR_AUTO_DETECT_BROWSER_PREFERENCE = True
-THEME_COLOR_ENABLE_USER_OVERRIDE = True
+THEME_COLOR_ENABLE_USER_OVERRIDE = False
 USE_LESS = True
 
 # Pelican plugins
-#MARKUP = ['md']
-#PLUGIN_PATHS = ['./plugins']
-#PLUGINS = ['render_math', 'liquid_tags']
-#IGNORE_FILES = ['.ipynb_checkpoints']
+MARKUP = ['md']
+PLUGIN_PATHS = ['./plugins']
+
+from pelican_jupyter import liquid as nb_liquid
+PLUGINS = ['render_math', 'pelican.plugins.liquid_tags', nb_liquid]
+IGNORE_FILES = ['.ipynb_checkpoints']
 
 # needed for liquid tags
-#NOTEBOOK_DIR = 'notebooks'
-DEFAULT_PAGINATION = 3
+NOTEBOOK_DIR = 'notebooks'
+DEFAULT_PAGINATION = 2
