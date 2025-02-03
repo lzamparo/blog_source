@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Lee Zamparo - Lee</title><link href="lzamparo.github.io/" rel="alternate"></link><link href="lzamparo.github.io/feeds/lee.atom.xml" rel="self"></link><id>lzamparo.github.io/</id><updated>2016-12-08T23:45:00-05:00</updated><subtitle>machine learning, computational biology, NLP</subtitle><entry><title>Bayesian Convolutional Neural Networks with Bernoulli Approximate Variational Inference</title><link href="lzamparo.github.io/bayesian-convolutional-neural-networks-with-bernoulli-approximate-variational-inference.html" rel="alternate"></link><published>2016-12-08T23:45:00-05:00</published><updated>2016-12-08T23:45:00-05:00</updated><author><name>Lee</name></author><id>tag:None,2016-12-08:lzamparo.github.io/bayesian-convolutional-neural-networks-with-bernoulli-approximate-variational-inference.html</id><summary type="html">&lt;p&gt;After a long hiatus, I’m going to write about another paper &lt;a href="http://mlg.eng.cam.ac.uk/yarin/PDFs/NIPS_2015_bayesian_convnets.pdf"&gt;I read recently&lt;/a&gt;, that is changing the way I think about using deep networks for biological sequence problems.&lt;/p&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
+&lt;p&gt;Anyone that’s working in applied machine learning these days is familiar with the idea of convolutional neural networks …&lt;/p&gt;</summary><content type="html">&lt;p&gt;After a long hiatus, I’m going to write about another paper &lt;a href="http://mlg.eng.cam.ac.uk/yarin/PDFs/NIPS_2015_bayesian_convnets.pdf"&gt;I read recently&lt;/a&gt;, that is changing the way I think about using deep networks for biological sequence problems.&lt;/p&gt;
+&lt;h2&gt;Background&lt;/h2&gt;
+&lt;p&gt;Anyone that’s working in applied machine learning these days is familiar with the idea of convolutional neural networks (abbr. convent).  They have a long history of success in all sorts of supervised learning tasks (usually object recognition in images), but have since been extended to almost any domain you can properly define a convolution (or more often cross-correlation, see this excellent chapter from &lt;a href="http://www.deeplearningbook.org/contents/convnets.html"&gt;the deep learning textbook&lt;/a&gt; for more details).  The key idea behind a convolutional network, at least in the context of a unit that is composed to build a deeper model, is that if can be understood as a sparse form of a fully connected layer with a specific way of tying together the values of certain parameters.  This reduction in the ratio of free parameters to training data means we should be able to get better estimates for the model parameters without requiring anything more than the tools used for training regular feed forward nets.  &lt;/p&gt;
+&lt;p&gt;A typical contemporary convnet, however, will employ very many local receptive fields (also known as filters), which act as feature detectors, possibly in a larger network.  They employ many, many layers, in pursuit of better discriminative performance, which eats away at any previously realized gains in reducing the number of parameters.  All this is to say that they may overfit in situations where training data is scarce.  &lt;a href="http://mlg.eng.cam.ac.uk/yarin/PDFs/NIPS_2015_bayesian_convnets.pdf"&gt;This paper&lt;/a&gt;, by Yarin Gal and Zoubin Ghahramani, examines how placing a distribution over the kernels that parameterize the CNNs, they  in a Bayesian framework can control overfitting naturally, without either incurring much more computational overhead or significantly altering the form of the network. &lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;The authors pick up on a previous line of work showing that dropout in neural networks can be interpreted as an approximation to GPs.  In this work, they go on to show that networks trained using &lt;a href="http://www.jmlr.org/papers/volume15/srivastava14a.old/source/srivastava14a.pdf"&gt;dropout&lt;/a&gt; can be interpreted as variational inference in Bayesian neural networks, using Bernoulli approximating distributions.  &lt;/p&gt;
+&lt;p&gt;Dropout, usually understood in the context of model averaging, is instead cast here as approximate variational inference in a Bayesian neural network model.  What this means I’ll establish below.  &lt;/p&gt;
+&lt;h2&gt;Bayesian Neural Nets&lt;/h2&gt;
+&lt;p&gt;The defining feature of a Bayesian neural network is the treatment of model weights as random variables.  The authors use a Gaussian distribution : &lt;/p&gt;
+&lt;div class="math"&gt;$$\mathbf{W}_i \backsim \mathcal{N}(0,\mathbf{I})$$&lt;/div&gt;
+&lt;p&gt;
+Leaving out the bias vectors for simplicity and assuming a multi-class likelihood, the output of the network given input &lt;span class="math"&gt;\(x\)&lt;/span&gt; is: 
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ \hat{f}(x, (\mathbf{W}_i)_{i=1}^{L}) $$&lt;/div&gt;
+&lt;p&gt;
+which itself is a random variable.  If we abbreviate the output as &lt;span class="math"&gt;\(\hat{f} := \hat{f}(\mathbf{x}, (\mathbf{W_i}_{i=i}^{L}))\)&lt;/span&gt;, where I indexes each of the &lt;span class="math"&gt;\(L\)&lt;/span&gt; layers in the model, then the likelihood is: 
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ p(y | \mathbf{x}, (\mathbf{W}_i)_{i=1}^{L}) = \text{Cat}\left( \frac{exp(\hat{f})}{\sum\limits_{d’}exp(\hat{f_{d’}})} \right)$$&lt;/div&gt;
+&lt;p&gt;In contrast with most neural nets, where the goal is to optimize the values of the model parameters to minimize some loss or objective function, the goal of a Bayesian NN is to estimate the posterior distribution over the model parameters: &lt;span class="math"&gt;\(P((\mathbf{W}_i)_{i=1}^{L}|\mathbf{X},\mathbf{Y})\)&lt;/span&gt;.  Exact calculation of the posterior is intractable in general, but can be estimated by either MCMC or variational inference.  The authors here choose the latter, placing an approximating variational distribution over the weights &lt;span class="math"&gt;\(q((\mathbf{W}_i))\)&lt;/span&gt; (hereafter, this is how I’ll refer to the weights of all layers in the network), and minimizing the KL divergence between &lt;span class="math"&gt;\(q\)&lt;/span&gt; and the true posterior:
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ KL\left( q((\mathbf{W}_i))||p((\mathbf{W}_i)|\mathbf{X},\mathbf{Y}) \right) $$&lt;/div&gt;
+&lt;h2&gt;Bernoulli variational approximation, and MC dropout&lt;/h2&gt;
+&lt;p&gt;The authors define their approximating variational distribution &lt;span class="math"&gt;\(q(\mathbf{W}_i)\)&lt;/span&gt; for each layer &lt;span class="math"&gt;\(i\)&lt;/span&gt; as 
+&lt;/p&gt;
+&lt;div class="math"&gt;\begin{align}
+\mathbf{W}_i &amp;amp;= \mathbf{M}_i \cdot \text{diag}\left( \left[ \mathbf{z}_{i,j} \right]_{j=1}^{K_i} \right) \\
+\mathbf{z}_{i,j} &amp;amp;\backsim \text{Bernoulli}(p_i)\; \text{for} i = 1, \dots, L,\; j = 1, \dots, K_{i-1}
+\end{align}&lt;/div&gt;
+&lt;p&gt;The &lt;span class="math"&gt;\(\mathbf{z}_{i,j}\)&lt;/span&gt; are Bernoulli distributed random variables, and the &lt;span class="math"&gt;\(M_i\)&lt;/span&gt; are variational parameters.  So, once the posterior is approximated using VI, you use the model to generate predictions for new data &lt;span class="math"&gt;\(\mathbf{x}^{*}\)&lt;/span&gt; by replacing the (intractable) true posterior with the approximate one:&lt;/p&gt;
+&lt;div class="math"&gt;\begin{align}
+p(y^{*} | \mathbf{x}^{*},\mathbf{X},\mathbf{Y}) &amp;amp;\approx \int p\left(y^{*}|\mathbf{x}^{*},(\mathbf{W}_i)\right)q\left((\mathbf{W}_i) \right) \approx \frac{1}{T}\sum\limits_{t=1}^{T}p\left( y^{*}|\mathbf{x}^{*},(\mathbf{W}_i)_t \right)
+\end{align}&lt;/div&gt;
+&lt;p&gt;To clarify, in the above approximation, you draw &lt;span class="math"&gt;\(t\)&lt;/span&gt; different &lt;span class="math"&gt;\((\mathbf{W}_i)\)&lt;/span&gt; from &lt;span class="math"&gt;\((\mathbf{W}_i)_t \backsim q\left( (\mathbf{W}_i)\right)\)&lt;/span&gt;; the posterior is approximated via MC integration.  &lt;/p&gt;
+&lt;p&gt;This is the coolest part of the paper.  It says that once you find a good &lt;span class="math"&gt;\(q\left((\mathbf{W})_i \right)\)&lt;/span&gt;, you can get fully Bayesian predictions for new data by simply averaging together several runs of the new input through your model, each time drawing a new set of realized weights from &lt;span class="math"&gt;\(q\)&lt;/span&gt; along with dropout masks &lt;span class="math"&gt;\(\mathbf{z}\)&lt;/span&gt;.  They call this MC dropout.  &lt;/p&gt;
+&lt;h2&gt;My two cents&lt;/h2&gt;
+&lt;p&gt;The paper continues on to test their new proposed dropout (which can apply equally well to weights representing kernels in a convolutional NN as well as fully connected layers) against a set of comparative networks on both MNIST and CIFAR10, measuring the resistance to overfitting conferred by MC dropout on standard models (lenet), versus conventional dropout.  I won’t reproduce the figures here, but their experiments show a small but significant effect.&lt;/p&gt;
+&lt;p&gt;A fine side-point to take note of is the methodology used to measure overfitting: sub-divide your labeled training data, train on a subset, and measure how quickly the model begins to overfit.  Simple, and effective.  &lt;/p&gt;
+&lt;p&gt;So, to sum up, I really like this paper.  For very little extra computational effort, you can turn your convnet into a Bayesian convnet.  This gives you the dual benefits of better protection against over-fitting, as well as uncertainty estimates in your predictions, two crucial qualities that are lacking in most deep learning models for biological sequence data.  I’m excited to try it out!&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content><category term="Papers"></category></entry><entry><title>Basset: multi-task convolutional networks for predicting regions chromatin from sequence</title><link href="lzamparo.github.io/basset-multi-task-convolutional-networks-for-predicting-regions-chromatin-from-sequence.html" rel="alternate"></link><published>2016-02-15T17:45:00-05:00</published><updated>2016-02-15T17:45:00-05:00</updated><author><name>Lee</name></author><id>tag:None,2016-02-15:lzamparo.github.io/basset-multi-task-convolutional-networks-for-predicting-regions-chromatin-from-sequence.html</id><summary type="html">&lt;p&gt;I've been reading a few papers recently that each involve training a deep network that takes input directly from sequence and predicts some aspect of 
+chromatin.  &lt;a href="http://www.nature.com/nbt/journal/v33/n8/full/nbt.3300.html"&gt;Deep Bind&lt;/a&gt; predicts protein-DNA binding, and 
+&lt;a href="http://www.nature.com/nmeth/journal/v12/n10/full/nmeth.3547.html"&gt;DeepSEA&lt;/a&gt; predicts the effect of SNPs on chromatin state.  The most recent paper, 
+and the one I find …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've been reading a few papers recently that each involve training a deep network that takes input directly from sequence and predicts some aspect of 
+chromatin.  &lt;a href="http://www.nature.com/nbt/journal/v33/n8/full/nbt.3300.html"&gt;Deep Bind&lt;/a&gt; predicts protein-DNA binding, and 
+&lt;a href="http://www.nature.com/nmeth/journal/v12/n10/full/nmeth.3547.html"&gt;DeepSEA&lt;/a&gt; predicts the effect of SNPs on chromatin state.  The most recent paper, 
+and the one I find most accessible, is &lt;a href="http://biorxiv.org/content/early/2015/10/05/028399"&gt;Basset&lt;/a&gt;. Authored by David R. Kelley (from John Rinn's lab),
+as well as former U of T alumnus Jasper Snoek, this is a great paper which should make a lasting contribution to sequence modeling.&lt;/p&gt;
+&lt;h3&gt;Summary&lt;/h3&gt;
+&lt;p&gt;The authors build (and more importantly distribute) a deep CNN to learn functional activity of DNA sequences directly from the sequences themselves.&lt;br&gt;
+They trained Basset on DNA sequences from 2 million different loci to predict DNA accessibility.  They took DNAseI accessible peaks encoded as BED 
+files for 125 different cell types from ENCODE (and another 39 from Epigenomics Roadmap), extended each peak 300bp in each direction from the midpoint, 
+and merged proximal peaks.  These 600bp sequences were then encoded as one-hot 4 x 600 matrices.  For each sequence, the network had to 
+simultaneously predict whether this site was open or closed in each cell type.  &lt;/p&gt;
+&lt;p&gt;They use mini-batch stochastic gradient descent (RMSprop) to train the network, with (now) standard tricks for regularization like batch-norm &amp;amp; 
+dropout.  They also cleverly make use of Bayesian optimization to tune their hyper-parameters via the excellent 
+&lt;a href="https://github.com/HIPS/Spearmint"&gt;Spearmint&lt;/a&gt; package.  They compare to state of the art predictors that learn complex kernels (gkm-SVM in this case), 
+and win handily.  Satisfied with their ability to predict accessibility, they perform neat experiments of in-silico mutagenisis to try and nail down 
+which SNPs might have the greatest effect on accessibility.  They also inspect the final forms of their first layer convolutional filters, interpreting 
+them as PSSMs.  Here results seem mixed; some filters are clear matches for known TF binding sites, others are merely indicative of more general 
+aspects of local sequence state (AT rich regions, for example).  &lt;/p&gt;
+&lt;h3&gt;My two cents&lt;/h3&gt;
+&lt;p&gt;If a person from an NLP or computer vision background were to check out this model (pictured as figure 1), it might not elicit much 
+excitement.  "What's the big deal?  It's a convnet with multi-task binary output prediction".  The big deal is that only recently have people 
+figured out how to make convents work properly on sequence predition problems for biological sequences.  And from my perspective, this is the best 
+effort yet.  Not only because their code is most readily accessible, but also because their experiments are meticulously documented, and their data set 
+is readily compiled.  The authors considerable effort to produce a robust software tool that yields reproducible results is a huge step forward for 
+computational biology.  &lt;/p&gt;
+&lt;p&gt;It took me a bit of extra effort to try this out.  For strange reasons, we can't run Torch natively on our GPU-capable cluster nodes.  It's related to 
+the version of CentOS running on each node, and the constraints for kernels &amp;amp; version of glibc this entails.  Happily, docker now exists and can 
+stomp all goombas (&lt;strong&gt;n. m.&lt;/strong&gt; dependency related problems); you'll find my version on &lt;a href="https://hub.docker.com/r/lzamparo/basset/"&gt;docker hub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I'm really interested in two extensions of this paper.  The first figuring out how to look at much longer input sequences.  We know from various other
+assays (e.g HiC) that there are longer genomic distance dependencies of cis-sequence which could determine accessibility, so finding an efficient way
+to consider longer input sequences would be interesting (maybe some attention mechanism so the model learns where to pay attention would help mitigate
+the computational burden).  The second is figuring out how to use these predicitons of accessibility to improve gene expression prediction.  By 
+combining a model like this with a dataset like GTex, I think we could get really interesting results.  &lt;/p&gt;</content><category term="Papers"></category></entry><entry><title>Blogging using Pelican</title><link href="lzamparo.github.io/blogging-using-pelican.html" rel="alternate"></link><published>2015-11-14T20:04:00-05:00</published><updated>2015-11-14T20:04:00-05:00</updated><author><name>Lee</name></author><id>tag:None,2015-11-14:lzamparo.github.io/blogging-using-pelican.html</id><content type="html">&lt;p&gt;My first attempt at blogging using Pelican and github.io.&lt;/p&gt;</content><category term="Python"></category></entry></feed>

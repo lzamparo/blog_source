@@ -1,8 +1,10 @@
 PY?=python3
 PELICAN?=pelican
 PELICANOPTS=
+SITENAME?=lzamparo.github.io
 
 BASEDIR=$(CURDIR)
+PAGESDIR=$(dir $(realpath $(dir $(MAKEFILE_LIST))))$(SITENAME)
 INPUTDIR=$(BASEDIR)/content
 OUTPUTDIR=$(BASEDIR)/output
 CONFFILE=$(BASEDIR)/pelicanconf.py
@@ -97,7 +99,10 @@ rsync_upload: publish
 	rsync -e "ssh -p $(SSH_PORT)" -P -rvzc --delete $(OUTPUTDIR)/ $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR) --cvs-exclude
 
 github: publish
-	ghp-import -m "Generate Pelican site" -b $(GITHUB_PAGES_BRANCH) $(OUTPUTDIR)
+	cp -r $(OUTPUTDIR)/* $(PAGESDIR)
+	cd $(PAGESDIR)
+	git add . && git commit -m "refreshing content"
 	git push origin $(GITHUB_PAGES_BRANCH)
+	cd $(BASEDIR)
 
 .PHONY: html help clean regenerate serve serve-global devserver publish github
